@@ -103,6 +103,7 @@ class _DefaultController extends BaseController {
 			if($_POST["id"]){
 				try{
 					DAO::update($object);
+					
 					$msg=new DisplayedMessage($this->model." `{$object->toString()}` mis à jour");
 				}catch(\Exception $e){
 					$msg=new DisplayedMessage("Impossible de modifier l'instance de ".$this->model,"danger");

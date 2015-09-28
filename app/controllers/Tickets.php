@@ -43,31 +43,37 @@ class Tickets extends \_DefaultController {
 		$statut=DAO::getAll("Statut");
 		
 		
-		if($ticket->getCategorie()==null ){
+		if($ticket->getCategorie()==null){
 			$cat=-1;
+			$stat=-1;
 			
-		}else{
+		}
+		else{
+			
 			$cat=$ticket->getCategorie()->getId();
-			
+			$stat=$ticket->getStatut()->getId();
 		}
 		
 		$listCat=Gui::select($categories,$cat,"Sélectionner une catégorie ...");
+		$listStatut=Gui::select($statut, $stat, "Sélectionner un statut ...");
 		$listType=Gui::select(array("demande","intervention"),$ticket->getType(),"Sélectionner un type ...");
+		
 		if (Auth::isAdmin() == false){
 			
 			
 			//$selectclass = '<select disabled class="form-control" name="idStatut"> '.statutNow.'</select>';
-			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType));
+			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "listStatut"=>$listStatut));
 			echo Jquery::execute("CKEDITOR.replace( 'description');");
 			
 		}
 			
 		if (Auth::isAdmin()){
 			
-			$listStatut=Gui::select(array("Nouveau","Attribué","En attente", "Résolu", "Clos"),$ticket->getStatut(),"Sélectionner un statut ...");
-			$selectclass='<select enable class="form-control" name="idStatut">'.$listStatut.'</select>';
+			$stat=$ticket->getStatut()->getId();
+			$listStatut=Gui::select($statut,$stat, "Sélectionner un statut ...");
 			
-			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "listStatut"=>$listStatut, "selectclass"=>$selectclass));
+			
+			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "statut"=>$statut, "listStatut"=>$listStatut));
 			echo Jquery::execute("CKEDITOR.replace( 'description');"); 
 			
 		}
@@ -85,6 +91,7 @@ class Tickets extends \_DefaultController {
 		$object->setStatut($statut);
 		$user=DAO::getOne("User", $_POST["idUser"]);
 		$object->setUser($user);
+		
 	}
 
 	/* (non-PHPdoc)
@@ -94,10 +101,14 @@ class Tickets extends \_DefaultController {
 		$obj=parent::getInstance($id);
 		if(null==$obj->getType())
 			$obj->setType("intervention");
-		if($obj->getStatut()===NULL){
-			$statut=DAO::getOne("Statut", 3);
+		 if($obj->getStatut()===NULL){
+			$statut=DAO::getOne("Statut", 1);
 			$obj->setStatut($statut);
-		}
+		
+			}
+			
+			
+		
 		if($obj->getUser()===NULL){
 			$obj->setUser(Auth::getUser());
 		}

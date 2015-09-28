@@ -122,6 +122,7 @@ class Ticket extends Base{
 
 	public function toString(){
 		$cat="";
+		
 		if($this->categorie!==null)
 			$cat=$this->categorie;
 		$stat="";

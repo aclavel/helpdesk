@@ -8,6 +8,7 @@
 <div class="alert alert-info">Ticket : <?php echo $ticket->toString()?></div>
 <div class="form-group">
 	<input type="hidden" name="id" value="<?php echo $ticket->getId()?>">
+	
 	<label for="type">Type</label>
 	<select class="form-control" name="type">
 	<?php echo $listType;?>
@@ -23,8 +24,8 @@
 </div>
 <div class="form-group">
 <input type="hidden" name="id" value="<?php echo $ticket->getId()?>">
-	<label>Statut</label>
-	<div>
+	<label for="idStatut">Statut</label>
+	<div class="form-group">
 	
 	
 
@@ -38,8 +39,9 @@ if (Auth::isAdmin() == false){
 }
 
 else{
-	
-	echo $selectclass;
+	echo'<select class="form-control" class="idStatut" name="idStatut">';
+	echo $listStatut;
+	echo'</select>';
 }
 
 ?>
@@ -47,7 +49,7 @@ else{
 
 	 
 	</div>
-	<!-- <select class="form-control" name="idStatut"> -->
+
 	
 	
 	<label>Emetteur</label>
