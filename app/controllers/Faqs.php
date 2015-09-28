@@ -69,8 +69,7 @@ class Faqs extends \_DefaultController {
 		echo "<table class='table table-striped'>";
 		echo "<thead>";
 			echo "<tr>";
-				echo "<th>".$this->model."</th>";
-				echo "<th>";
+				echo "<th colspan='5' style='padding-left:90%'>";
 				echo "<div class='btn-group'>";
 					echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>";
 						echo "Trier par... <span class='caret'></span>";
@@ -86,8 +85,7 @@ class Faqs extends \_DefaultController {
 		echo "<tbody>";
 
 		$currentOrder="";
-		$func="getCategorie";
-		if (sizeof($params)>1) {
+		$func="getRien";
 			switch ($params[1]){
 				case "idCategorie":
 					$func="getCategorie";
@@ -96,12 +94,11 @@ class Faqs extends \_DefaultController {
 					$func="getDateCreation";
 					break;
 			}
-		}
 		if (Auth::isAdmin()){
 			foreach ($objects as $object){
 				
 				if($currentOrder!=$object->$func().""){
-					echo "<tr><td colspan='3'><h2>".$object->$func()."</h2></td></tr>";
+					echo "<tr><td colspan='2'><h2>".$object->$func()."</h2></td></tr>";
 					$currentOrder=$object->$func()."";
 				}
 				
@@ -127,6 +124,10 @@ class Faqs extends \_DefaultController {
 				if ($object->getDisable()=="0"){
 					
 					echo "<tr>";
+					if($currentOrder!=$object->$func().""){
+						echo "<tr><td colspan='3'><h2>".$object->$func()."</h2></td></tr>";
+						$currentOrder=$object->$func()."";
+					}
 					echo "<td class='titre-faq'><a href='".$baseHref."/frm2/".$object->getId()."' style='color:#253939'><b>".$object->getTitre()."</b> - ".$object->getUser()."</a></td>";
 					echo "<td class='td-center'><a class='btn btn-success btn-xs' href='".$baseHref."/frm2/".$object->getId()."'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></a></td>";
 				}

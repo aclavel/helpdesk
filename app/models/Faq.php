@@ -107,7 +107,8 @@ class Faq extends Base{
 	}
 	
 	
-	
+	public function getRien(){
+	}
 	
 	
 
