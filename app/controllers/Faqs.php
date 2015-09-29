@@ -285,8 +285,8 @@ class Faqs extends \_DefaultController {
 		
 		echo "<li style='float:left; margin-right:10px;'><a class='btn btn-info' href='".$config["siteUrl"].$baseHref."'>Tous les articles</a></li>";
 		echo 	'<form method="post" action="faqs/search" >
-					<li style="float:left;"><input name="titre" class="btn" style="background-color:#ddd; color:#000;" placeholder="Recherche"></input></li>
-					<li style="float:left;"><button type="submit" class="btn glyphicon glyphicon-search" id="btUpdateTitre"><?php echo $ajou_modif?></button></li>
+					<li style="float:left;"><input name="titre" class="btn" style="background-color:#ddd; color:#000; cursor:text; border-radius:4px 0px 0px 4px; border-top:solid 2px #999; border-bottom:solid 2px #999; border-left:solid 2px #999;" placeholder="Recherche"></input></li>
+					<li style="float:left;"><button type="submit" class="btn glyphicon glyphicon-search" id="btUpdateTitre" style="border-radius:0px 4px 4px 0px; top:0px; border-top:solid 2px #999; border-bottom:solid 2px #999; border-right:solid 2px #999; border-left:solid 1px #bbb"><?php echo $ajou_modif?></button></li>
 				</form>
 				</ul>';
 		
