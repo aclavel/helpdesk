@@ -203,7 +203,7 @@ class Faqs extends \_DefaultController {
 			}else{
 				$msg=new DisplayedMessage($this->model." introuvable","warning");
 			}
-		}catch(Exception $e){
+		}catch(\Exception $e){
 			$msg=new DisplayedMessage("Impossible de désactiver l'instance de ".$this->model,"danger");
 		}
 		$this->forward(get_class($this),"index",$msg);
@@ -219,7 +219,7 @@ class Faqs extends \_DefaultController {
 			}else{
 				$msg=new DisplayedMessage($this->model." introuvable","warning");
 			}
-		}catch(Exception $e){
+		}catch(\Exception $e){
 			$msg=new DisplayedMessage("Impossible d'activer l'instance de ".$this->model,"danger");
 		}
 		$this->forward(get_class($this),"index",$msg);

@@ -66,6 +66,10 @@ class Auth {
 		if(isset($user)){
 			$infoUser="<a class='btn btn-primary' href='defaultC/disconnect'>Déconnexion <span class='label label-success'>".$user."</span></a>";
 		}else{
+			$infoUser = '<div class="btn-group">
+							<a href="Connexions" class="btn btn-primary" id="btConnexion" style="">Connexion</a>
+						</div>';
+			/*
 			$infoUser='<div class="btn-group">
 							<button type="button" class="btn btn-'.$style.' dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								Connexion en tant que... <span class="caret"></span>
@@ -75,6 +79,7 @@ class Auth {
 								<li><a href="defaultC/asUser"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;Utilisateur</a></li>
 							</ul>
 						</div>';
+			*/
 		}
 		return $infoUser;
 	}

@@ -62,11 +62,11 @@ class Startup{
 							$obj->$u[1](array_slice($u, 2));
 						break;
 					}
-				}catch (Exception $e){
+				}catch (\Exception $e){
 					print "Error!: " . $e->getMessage() . "<br/>";
 					die();
 				}
-			}catch (Exception $e){
+			}catch (\Exception $e){
 				print "Error!: " . $e->getMessage() . "<br/>";
 				die();
 			}

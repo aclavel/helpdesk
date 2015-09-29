@@ -57,7 +57,7 @@ abstract class BaseController {
 			else
 				include($fileName);
 		}else{
-			throw new Exception("Vue inexistante");
+			throw new \Exception("Vue inexistante");
 		}
 	}
 	private function includeFileAsString($file){
@@ -102,12 +102,12 @@ abstract class BaseController {
 			if(method_exists($obj, $action)){
 				$obj->$action($params);
 			}else{
-				throw new Exception("La méthode `{$action}` n'existe pas sur le contrôleur `{$controller}`");
+				throw new \Exception("La méthode `{$action}` n'existe pas sur le contrôleur `{$controller}`");
 			}
 			if($finalize===true){
 				$obj->finalize();
 			}
-		}catch(Exception $e){
+		}catch(\Exception $e){
 			echo $e->getMessage();
 		}
 	}
