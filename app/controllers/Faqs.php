@@ -201,13 +201,15 @@ class Faqs extends \_DefaultController {
 	/***********************************************************************************************************************************************************************/
 	public function frm2($id = NULL) {
 		$faq = $this->getInstance($id);
-		$this->loadView("faq/vReadElent", array("faq"=>$faq));
 		if (Auth::isAdmin()){}
 		else {
 			$object=DAO::getOne($this->model, $id[0]);
 			$object->setPopularity($faq->getPopularity() + 1);
 			DAO::update($object);
 		}
+		
+		
+		$this->loadView("faq/vReadElent", array("faq"=>$faq));
 	}
 	/***********************************************************************************************************************************************************************/
 	
