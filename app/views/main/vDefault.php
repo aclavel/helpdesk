@@ -16,7 +16,12 @@
 			<fieldset>
 				<legend>Connexion</legend>
 					<!-- <a class="btn btn-default" href="defaultc/asAdmin">Connexion en tant qu'admin</a> -->
+					<?php if(Auth::isAuth()){ ?>
+					<a class="btn btn-default" href="connexions/compte">Mon compte</a>
+					<?php } 
+					 else { ?>
 					<a class="btn btn-default" href="connexions">Connexion</a>
+					<?php } ?>
 					<a class="btn btn-warning" href="defaultc/disconnect">Déconnexion</a>
 			</fieldset>
 			<fieldset>

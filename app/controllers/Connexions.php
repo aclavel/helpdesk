@@ -13,6 +13,7 @@ use micro\orm\DAO;
 class Connexions extends BaseController {
 	public function Connexions(){
 		$this->title="Connexion";
+		$this->title2="Mon compte";
 	}
 	
 	
@@ -24,12 +25,25 @@ class Connexions extends BaseController {
 		$this->header();
 		$this->loadView("connexion/vConnexion");
 	}
+	
+	public function compte() {
+		$this->header2();
+		$this->loadView("connexion/vCompte");
+	}
 
 	private function header() {
 		if(!RequestUtils::isAjax()){
 			$this->loadView("main/vHeader",array("infoUser"=>Auth::getInfoUser()));
 			echo "<div class='container'>";
 			echo "<h1>".$this->title."</h1>";
+		}
+	}
+	
+	private function header2() {
+		if(!RequestUtils::isAjax()){
+			$this->loadView("main/vHeader",array("infoUser"=>Auth::getInfoUser()));
+			echo "<div class='container'>";
+			echo "<h1>".$this->title2."</h1>";
 		}
 	}
 	
@@ -54,5 +68,7 @@ class Connexions extends BaseController {
 			echo "<span> Votre mot de passe ou login est incorrecte. </span>";
 		}
 	}
+	
+	
 	
 }
