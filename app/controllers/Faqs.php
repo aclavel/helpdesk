@@ -16,6 +16,7 @@ class Faqs extends \_DefaultController {
 		$this->model="Faq";
 	}
 
+	/***********************************************************************************************************************************************************************/
 	/* (non-PHPdoc)
 	 * @see _DefaultController::setValuesToObject()
 	 */
@@ -25,7 +26,9 @@ class Faqs extends \_DefaultController {
 		$categorie=DAO::getOne("Categorie", $_POST["idCategorie"]);
 		$object->setCategorie($categorie);
 	}
+	/***********************************************************************************************************************************************************************/
 
+	/***********************************************************************************************************************************************************************/
 	public function test(){
 		$faqs=DAO::getAll("Faq","1=1 order by dateCreation limit 1,1");
 		foreach ($faqs as $faq){
@@ -35,14 +38,9 @@ class Faqs extends \_DefaultController {
 		$ArticleMax=DAO::getOne("Faq","id=(SELECT max(id) FROM Faq)");
 		echo $ArticleMax;
 	}
-	
+	/***********************************************************************************************************************************************************************/
 
-
-	// **************************************************************************************** //
-	
-
-
-
+	/***********************************************************************************************************************************************************************/
 	public function index($param=null){
 
 	global $config;
@@ -65,10 +63,22 @@ class Faqs extends \_DefaultController {
 		
 		$objects=DAO::getAll($this->model,$orderBy);
 		
+		
+		echo "<ul style='list-style:none; padding:0 0 0 0;'>";
+		
+		
+		
 		if(Auth::isAdmin()){
-			echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/mesArticles'>Mes articles</a>";
-			echo "<a class='btn btn-info' href='".$config["siteUrl"].$baseHref."'>Tous les articles</a>";
+			echo "<li style='float:left; margin-right:10px;'><a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/mesArticles'>Mes articles</a></li>";
 		}
+		
+		echo "<li style='float:left; margin-right:10px;'><a class='btn btn-info' href='".$config["siteUrl"].$baseHref."'>Tous les articles</a></li>";
+		echo 	'<form method="post" action="faqs/search" >
+					<li style="float:left;"><input name="titre" class="btn" style="background-color:#ddd; color:#000; cursor:text; border-radius:4px 0px 0px 4px; border-top:solid 2px #999; border-bottom:solid 2px #999; border-left:solid 2px #999;" placeholder="Recherche"></input></li>
+					<li style="float:left;"><button type="submit" class="btn glyphicon glyphicon-search" id="btUpdateTitre" style="border-radius:0px 4px 4px 0px; top:0px; border-top:solid 2px #999; border-bottom:solid 2px #999; border-right:solid 2px #999; border-left:solid 1px #bbb"><?php echo $ajou_modif?></button></li>
+				</form>
+				</ul>';
+		
 		echo "<table class='table table-striped'>";
 		echo "<thead>";
 			echo "<tr>";
@@ -149,9 +159,9 @@ class Faqs extends \_DefaultController {
 			echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
 		}
 	}
+	/***********************************************************************************************************************************************************************/
 	
-	// **************************************************************************************** //
-	
+	/***********************************************************************************************************************************************************************/
 	/* (non-PHPdoc)
 	 * @see _DefaultController::frm()
 	 */
@@ -186,13 +196,22 @@ class Faqs extends \_DefaultController {
 		}
 		echo Jquery::execute("CKEDITOR.replace( 'contenu');");
 	}
-
+	/***********************************************************************************************************************************************************************/
 	
+	/***********************************************************************************************************************************************************************/
 	public function frm2($id = NULL) {
 		$faq = $this->getInstance($id);
 		$this->loadView("faq/vReadElent", array("faq"=>$faq));
+		if (Auth::isAdmin()){}
+		else {
+			$object=DAO::getOne($this->model, $id[0]);
+			$object->setPopularity($faq->getPopularity() + 1);
+			DAO::update($object);
+		}
 	}
+	/***********************************************************************************************************************************************************************/
 	
+	/***********************************************************************************************************************************************************************/
 	public function disable($id = NULL){
 		try{
 			$object=DAO::getOne($this->model, $id[0]);
@@ -207,8 +226,11 @@ class Faqs extends \_DefaultController {
 			$msg=new DisplayedMessage("Impossible de désactiver l'instance de ".$this->model,"danger");
 		}
 		$this->forward(get_class($this),"index",$msg);
+		Jquery::execute('location:faq');
 	}
+	/***********************************************************************************************************************************************************************/
 	
+	/***********************************************************************************************************************************************************************/
 	public function activate($id = NULL){
 		try{
 			$object=DAO::getOne($this->model, $id[0]);
@@ -224,33 +246,131 @@ class Faqs extends \_DefaultController {
 		}
 		$this->forward(get_class($this),"index",$msg);
 	}
+	/***********************************************************************************************************************************************************************/
 	
+	/***********************************************************************************************************************************************************************/
+	public function search($param=null){
+		
+		global $config;
+
+		$orderBy="faq.titre LIKE '%".$_POST['titre']."%'";
+		if(!is_array($param) && $param!=null){
+			$param=array($param);
+		}
+		$baseHref=get_class($this);
+		if(isset($param) && $param[0] != "mess"){
+			if(is_string($param[0])){
+				$message=new DisplayedMessage($param[0]);
+			}else
+				$message=$param[0];
+			if(isset($message)){
+				$message->setTimerInterval($this->messageTimerInterval);
+				$this->_showDisplayedMessage($message);
+			}
+		}
+		
+		
+		$objects=DAO::getAll('faq',$orderBy);
+		
+		
+		echo "<ul style='list-style:none; padding:0 0 0 0;'>";
+		
+		
+		
+		if(Auth::isAdmin()){
+			echo "<li style='float:left; margin-right:10px;'><a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/mesArticles'>Mes articles</a></li>";
+		}
+		
+		echo "<li style='float:left; margin-right:10px;'><a class='btn btn-info' href='".$config["siteUrl"].$baseHref."'>Tous les articles</a></li>";
+		echo 	'<form method="post" action="faqs/search" >
+					<li style="float:left;"><input name="titre" class="btn" style="background-color:#ddd; color:#000;" placeholder="Recherche"></input></li>
+					<li style="float:left;"><button type="submit" class="btn glyphicon glyphicon-search" id="btUpdateTitre"><?php echo $ajou_modif?></button></li>
+				</form>
+				</ul>';
+		
+		echo "<table class='table table-striped'>";
+		echo "<thead>";
+		echo "<tr>";
+		echo "<th colspan='5' style='padding-left:90%'>";
+		echo "<div class='btn-group'>";
+		echo "<button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>";
+		echo "Trier par... <span class='caret'></span>";
+		echo "</button>";
+		echo "<ul class='dropdown-menu' role='menu'>";
+		echo "<li><a href='Faqs/index'>Sans filtre</a></li>";
+		echo "<li><a href='Faqs/index/mess/idCategorie'>categorie</a></li>";
+		echo "<li><a href='Faqs/index/mess/dateCreation'>date de creation</a></li>";
+		echo "</ul>";
+		echo "</div>";
+		echo "</th>";
+		echo "</tr>";
+		echo "</thead>";
+		echo "<tbody>";
+		
+		$currentOrder="";
+		$func="getRien";
+		if(count($param)>1){
+			switch ($param[1]){
+				case "idCategorie":
+					$func="getCategorie";
+					break;
+				case "dateCreation":
+					$func="getDateCreation";
+					break;
+			}
+				
+		}
+		if (Auth::isAdmin()){
+			foreach ($objects as $object){
+		
+				if($currentOrder!=$object->$func().""){
+					echo "<tr><td colspan='2'><h2>".$object->$func()."</h2></td></tr>";
+					$currentOrder=$object->$func()."";
+				}
+		
+				echo "<tr>";
+				echo "<td class='titre-faq' style='width:80%'><a href='".$baseHref."/frm2/".$object->getId()."' style='color:#253939'><b>".$object->getTitre()."</b> - ".$object->getUser()."</a></td>";
+				echo "<td class='td-center'><a class='btn btn-success btn-xs' href='".$baseHref."/frm2/".$object->getId()."'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></a></td>";
+					
+				if (Auth::getUser()==$object->getUser()){
+					echo "<td class='td-center'><a class='btn btn-primary btn-xs' href='".$baseHref."/frm/".$object->getId()."'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>";
+					if ($object->getDisable()=="0"){
+						echo "<td class='td-center'><a class='btn btn-warning btn-xs' href='".$baseHref."/disable/".$object->getId()."'><span class='glyphicon glyphicon-pause' aria-hidden='true'></span></a></td>";
+					}
+					else {
+						echo "<td class='td-center'><a class='btn btn-info btn-xs' href='".$baseHref."/activate/".$object->getId()."'><span class='glyphicon glyphicon-play' aria-hidden='true'></span></a></td>";
+					}
+					echo "<td class='td-center'><a class='btn btn-danger btn-xs' href='".$baseHref."/delete/".$object->getId()."'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>";
+				}
+			}
+			echo "</tr>";
+		}
+		else {
+			foreach ($objects as $object){
+				if ($object->getDisable()=="0"){
+						
+					echo "<tr>";
+					if($currentOrder!=$object->$func().""){
+						echo "<tr><td colspan='3'><h2>".$object->$func()."</h2></td></tr>";
+						$currentOrder=$object->$func()."";
+					}
+					echo "<td class='titre-faq'><a href='".$baseHref."/frm2/".$object->getId()."' style='color:#253939'><b>".$object->getTitre()."</b> - ".$object->getUser()."</a></td>";
+					echo "<td class='td-center'><a class='btn btn-success btn-xs' href='".$baseHref."/frm2/".$object->getId()."'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></a></td>";
+				}
+			}
+			echo "</tr>";
+		}
+		
+		echo "</tbody>";
+		echo "</table>";
+		
+		if (Auth::isAdmin()){
+			echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
+		}
+	}
+	/***********************************************************************************************************************************************************************/
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/***********************************************************************************************************************************************************************/
 	public function mesArticles($param = NULL) {
 		
 	global $config;
@@ -288,5 +408,6 @@ class Faqs extends \_DefaultController {
 			echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
 		}
 	}
+	/***********************************************************************************************************************************************************************/
 
 }
