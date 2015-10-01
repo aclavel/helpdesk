@@ -14,7 +14,7 @@ class Tickets extends \_DefaultController {
 		$this->title="Tickets";
 		$this->model="Ticket";
 	}
-	
+
 	
 	public function index($message=null){
 		global $config;
@@ -43,6 +43,19 @@ class Tickets extends \_DefaultController {
 		echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
 	}
 	
+
+	
+
+	public function trier(){
+		$faqs=DAO::getAll("Faq","1=1 order by dateCreation limit 1,1");
+		foreach ($faqs as $faq){
+			echo $faq."<br>";
+		}
+		echo DAO::$db->query("SELECT max(id) FROM Faq")->fetchColumn();
+		$ArticleMax=DAO::getOne("Faq","id=(SELECT max(id) FROM Faq)");
+		echo $ArticleMax;
+	}
+
 	
 	public function messages($id){
 		$ticket=DAO::getOne("Ticket", $id[0]);

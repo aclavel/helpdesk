@@ -1,14 +1,25 @@
+<?php use micro\orm\DAO; ?>
 
 <div class="container">
 	<div class="well well-lg">
 		<div id="main">
+		<?php if(Auth::isAdmin()){	
+			echo DAO::getAll("Ticket", "COUNT((idStatut='0')");
+		
+			?>
+		<fieldset>
+		<legend>Récents</legend>
+		<a class="btn btn-info" href="TicketsNouveau">Nouveaux Tickets <?php echo $notifT; ?></a>
+		
+		</fieldset>
+		<?php }?>
 			<fieldset>
 				<legend>Données</legend>
 				
 				<a class="btn btn-default" href="users">Utilisateurs</a>
 				<a class="btn btn-primary" href="categories">Catégories</a>
 				<a class="btn btn-info" href="tickets">Tickets</a>
-				<a class="btn btn-info" href="tickets">Nouveaux Tickets</a>		
+					
 				<a class="btn btn-success" href="statuts">Statuts</a>
 				<a class="btn btn-warning" href="faqs">Faq</a>
 				<a class="btn btn-danger" href="messages">Messages</a>

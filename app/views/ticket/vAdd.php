@@ -45,7 +45,7 @@ else{
 	
 
 	
-		echo  '<select class="form-group" class="idStatut" name="idStatut">'.$listStatut.'</select>';
+		echo  '<select class="form-control" class="idStatut" name="idStatut">'.$listStatut.'</select>';
 	}
 	 
 	 
