@@ -1,4 +1,5 @@
 <?php
+
 use micro\orm\DAO;
 use micro\js\Jquery;
 use micro\views\Gui;
@@ -8,27 +9,20 @@ use micro\views\Gui;
  * @version 1.1
  * @package helpdesk.controllers
  */
-class Tickets extends \_DefaultController {
-	public function Tickets(){
+class TicketsNouveau extends \_DefaultController {
+	public function TicketsNouveau(){
 		parent::__construct();
 		$this->title="Tickets";
 		$this->model="Ticket";
 	}
 
-	
 
-	public function trier(){
-		$faqs=DAO::getAll("Faq","1=1 order by dateCreation limit 1,1");
-		foreach ($faqs as $faq){
-			echo $faq."<br>";
-		}
-		echo DAO::$db->query("SELECT max(id) FROM Faq")->fetchColumn();
-		$ArticleMax=DAO::getOne("Faq","id=(SELECT max(id) FROM Faq)");
-		echo $ArticleMax;
-	}
-	
+
+
+
 	public function messages($id){
 		$ticket=DAO::getOne("Ticket", $id[0]);
+	
 		if($ticket!=NULL){
 			echo "<h2>".$ticket."</h2>";
 			$messages=DAO::getOneToMany($ticket, "messages");
@@ -45,62 +39,92 @@ class Tickets extends \_DefaultController {
 			echo Jquery::execute("$(function () {
 					  $('[data-toggle=\"popover\"]').popover({'trigger':'hover','html':true})
 				})");
+			
+			
+			
+		
 		}
 	}
-
+	
+	
+	
+	
+	
+public function index($message=null){
+		global $config;
+		$notifT = 'SELECT COUNT(idStatut ="0") FROM ticket';
+		$baseHref=get_class($this);
+		if(isset($message)){
+			if(is_string($message)){
+				$message=new DisplayedMessage($message);
+			}
+			$message->setTimerInterval($this->messageTimerInterval);
+			$this->_showDisplayedMessage($message);
+		}
+		$objects=DAO::getAll("Ticket","idStatut = '1'	");
+	
+		echo "<table class='table table-striped'>";
 		
+		echo "<thead><tr><th>".$this->model."</th></tr></thead>";
+		echo "<tbody>";
+		foreach ($objects as $object){
+			echo "<tr>";
+			echo "<td>".$object->toString()."</td>";
+			echo "<td class='td-center'><a class='btn btn-primary btn-xs' href='".$baseHref."/frm/".$object->getId()."'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>".
+			"<td class='td-center'><a class='btn btn-warning btn-xs' href='".$baseHref."/delete/".$object->getId()."'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>";
+			echo "</tr>";
+			
+		}
+		echo "</tbody>";
+		echo "</table>";
+		echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
+		//echo DAO::$db->query("SELECT COUNT(idStatut) FROM ticket where idStatut<1")->fetchColumn();
+		$objects=DAO::getAll("SELECT COUNT(idStatut) FROM ticket");
+		
+		
+		
+		
+		
+	}
+	
+	
+	
 	public function frm($id=NULL){
 		$ticket=$this->getInstance($id);
 		$categories=DAO::getAll("Categorie");
 		$statut=DAO::getAll("Statut");
 		
-		
+
 		if($ticket->getCategorie()==null){
 			$cat=-1;
 			$stat=-1;
-			
+				
 		}
 		else{
-			
+				
 			$cat=$ticket->getCategorie()->getId();
 			$stat=$ticket->getStatut()->getId();
-			
+				
 		}
+
+	
 		
 		$listCat=Gui::select($categories,$cat,"Sélectionner une catégorie ...");
 		$listStatut=Gui::select($statut, $stat, "Sélectionner un statut ...");
 		$listType=Gui::select(array("demande","intervention"),$ticket->getType(),"Sélectionner un type ...");
-		
-		if (Auth::isAdmin() == false){
-			
-			
-			//$selectclass = '<select disabled class="form-control" name="idStatut"> '.statutNow.'</select>';
-			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "listStatut"=>$listStatut,));
-			echo Jquery::execute("CKEDITOR.replace( 'description');");
-			
-			
-			//statutupdate
-			//$statutUpdate= 'coucou';
-			/* '<div class="form-control" disabled name="idStatut"><br>
-					<input type="hidden" name="idStatut" value=" echo $ticket->getStatut()->getId()"><br>$ticket->getStatut();<br></div>';
-			 */
-			
-		}
-			
-		if (Auth::isAdmin()){
-			
+
 			$stat=$ticket->getStatut()->getId();
 			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "statut"=>$statut, "listStatut"=>$listStatut));
-			echo Jquery::execute("CKEDITOR.replace( 'description');"); 
-			
+			echo Jquery::execute("CKEDITOR.replace( 'description');");
+				
 			//updteticket
 			//s$statutUpdate='coucou1';
 			/* '<select class="form-control" class="idStatut" name="idStatut"><br>$listStatut<br></select>'; */
-			
-		}
+				
 		
-	
-		
+
+
+
 			
 	}
 
@@ -115,33 +139,13 @@ class Tickets extends \_DefaultController {
 		$object->setStatut($statut);
 		$user=DAO::getOne("User", $_POST["idUser"]);
 		$object->setUser($user);
-		
+
 	}
 
 	/* (non-PHPdoc)
 	 * @see _DefaultController::getInstance()
 	 */
-	public function getInstance($id = NULL) {
-		$obj=parent::getInstance($id);
-		if(null==$obj->getType())
-			$obj->setType("intervention");
-		 if($obj->getStatut()===NULL){
-			$statut=DAO::getOne("Statut", 1);
-			$obj->setStatut($statut);
-		
-			}
-			
-			
-		
-		if($obj->getUser()===NULL){
-			$obj->setUser(Auth::getUser());
-		}
-		if($obj->getDateCreation()===NULL){
-			$obj->setdateCreation(date('Y-m-d H:i:s'));
-		}
-		return $obj;
-	}
-
+	
 
 	/* (non-PHPdoc)
 	 * @see BaseController::isValid()

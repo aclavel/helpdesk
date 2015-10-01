@@ -14,6 +14,7 @@ class Ticket extends Base{
 	private $titre;
 	private $description;
 	private $dateCreation;
+
 	/**
 	 * @ManyToOne
 	 * @JoinColumn(name="idCategorie",className="Categorie",nullable=true)
