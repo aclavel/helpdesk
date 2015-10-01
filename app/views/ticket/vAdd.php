@@ -30,19 +30,26 @@
 	
 
 <?php 
-if (Auth::isAdmin() == false){
-		echo '<div class="form-control" disabled name="idStatut">';
+if (Auth::isAdmin() == false){?>
+		<div class="form-control" disabled name="idStatut">
+			<input type="hidden" name="idStatut" value="<?php echo $ticket->getStatut()->getId()?>">
+	<?php  echo $ticket->getStatut();?>
 		
-	 echo $ticket->getStatut();
-		
-		echo'</div>';
+</div>
+<?php 
 }
 
 else{
-	echo'<select class="form-control" class="idStatut" name="idStatut">';
-	echo $listStatut;
-	echo'</select>';
-}
+	
+
+	
+
+	
+		echo  '<select class="form-group" class="idStatut" name="idStatut">'.$listStatut.'</select>';
+	}
+	 
+	 
+
 
 ?>
 		
@@ -56,7 +63,6 @@ else{
 	<div class="form-control" disabled><?php echo $ticket->getUser()?></div>
 	<label for="dateCreation">Date de création</label>
 	<input type="text" name="dateCreation" id="dateCreation" value="<?php echo $ticket->getDateCreation()?>" disabled class="form-control">
-	<input type="hidden" name="idStatut" value="<?php echo $ticket->getStatut()->getId()?>">
 	<input type="hidden" name="idUser" value="<?php echo $ticket->getUser()->getId()?>">
 </div>
 <div class="form-group">

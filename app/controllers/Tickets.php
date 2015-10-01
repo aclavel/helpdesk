@@ -15,6 +15,12 @@ class Tickets extends \_DefaultController {
 		$this->model="Ticket";
 	}
 
+	
+	
+	
+
+	
+	
 	public function messages($id){
 		$ticket=DAO::getOne("Ticket", $id[0]);
 		if($ticket!=NULL){
@@ -52,6 +58,7 @@ class Tickets extends \_DefaultController {
 			
 			$cat=$ticket->getCategorie()->getId();
 			$stat=$ticket->getStatut()->getId();
+			
 		}
 		
 		$listCat=Gui::select($categories,$cat,"Sélectionner une catégorie ...");
@@ -62,21 +69,32 @@ class Tickets extends \_DefaultController {
 			
 			
 			//$selectclass = '<select disabled class="form-control" name="idStatut"> '.statutNow.'</select>';
-			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "listStatut"=>$listStatut));
+			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "listStatut"=>$listStatut,));
 			echo Jquery::execute("CKEDITOR.replace( 'description');");
+			
+			
+			//statutupdate
+			//$statutUpdate= 'coucou';
+			/* '<div class="form-control" disabled name="idStatut"><br>
+					<input type="hidden" name="idStatut" value=" echo $ticket->getStatut()->getId()"><br>$ticket->getStatut();<br></div>';
+			 */
 			
 		}
 			
 		if (Auth::isAdmin()){
 			
 			$stat=$ticket->getStatut()->getId();
-			$listStatut=Gui::select($statut,$stat, "Sélectionner un statut ...");
-			
-			
 			$this->loadView("ticket/vAdd",array("ticket"=>$ticket,"listCat"=>$listCat,"listType"=>$listType, "statut"=>$statut, "listStatut"=>$listStatut));
 			echo Jquery::execute("CKEDITOR.replace( 'description');"); 
 			
+			//updteticket
+			//s$statutUpdate='coucou1';
+			/* '<select class="form-control" class="idStatut" name="idStatut"><br>$listStatut<br></select>'; */
+			
 		}
+		
+	
+		
 			
 	}
 
