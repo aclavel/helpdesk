@@ -80,10 +80,8 @@ class Connexions extends BaseController {
 		$user->setPassword($newMdp);
 		$user->setMail($newMail);
 		
-		$this->title="Mon compte";
 		$this->header();
-		$user = Auth::getUser();
-		$this->loadView("connexion/vCompte", array("user"=>$user));
+		$this->loadView("main/vDefault");
 		
 	}
 	
