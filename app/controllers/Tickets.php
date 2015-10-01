@@ -14,11 +14,34 @@ class Tickets extends \_DefaultController {
 		$this->title="Tickets";
 		$this->model="Ticket";
 	}
-
 	
 	
-	
-
+	public function index($message=null){
+		global $config;
+		$baseHref=get_class($this);
+		if(isset($message)){
+			if(is_string($message)){
+				$message=new DisplayedMessage($message);
+			}
+			$message->setTimerInterval($this->messageTimerInterval);
+			$this->_showDisplayedMessage($message);
+		}
+		$objects=DAO::getAll($this->model);
+		echo "<table class='table table-striped'>";
+		echo "<thead><tr><th>".$this->model."</th></tr></thead>";
+		echo "<tbody>";
+		foreach ($objects as $object){
+			echo "<tr>";
+			echo "<td class='titre-faq' style='width:80%'><a href='".$baseHref."/frm2/".$object->getId()."' style='color:#253939'>".$object->toString()."</a></td>";
+			echo "<td class='td-center'><a class='btn btn-success btn-xs' href='".$baseHref."/frm2/".$object->getId()."'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></a></td>";
+			echo "<td class='td-center'><a class='btn btn-primary btn-xs' href='".$baseHref."/frm/".$object->getId()."'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a></td>".
+					"<td class='td-center'><a class='btn btn-warning btn-xs' href='".$baseHref."/delete/".$object->getId()."'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td>";
+			echo "</tr>";
+		}
+		echo "</tbody>";
+		echo "</table>";
+		echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
+	}
 	
 	
 	public function messages($id){
@@ -42,7 +65,11 @@ class Tickets extends \_DefaultController {
 		}
 	}
 
-		
+	public function frm2($id = NULL) {
+		$ticket = $this->getInstance($id);
+		$this->loadView("ticket/vReadElent", array("ticket"=>$ticket));
+	}
+	
 	public function frm($id=NULL){
 		$ticket=$this->getInstance($id);
 		$categories=DAO::getAll("Categorie");
@@ -80,7 +107,7 @@ class Tickets extends \_DefaultController {
 			 */
 			
 		}
-			
+		
 		if (Auth::isAdmin()){
 			
 			$stat=$ticket->getStatut()->getId();
