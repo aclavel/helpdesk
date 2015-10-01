@@ -16,9 +16,7 @@ class Auth {
 		if(array_key_exists("user", $_SESSION))
 			$user=$_SESSION["user"];
 		
-		return $user;
-		
-		
+		return $user;	
 		
 	}
 
@@ -33,11 +31,6 @@ class Auth {
 			
 			$_SESSION["user"]=DAO::getOne("User", "admin=0");
 			
-			
-			
-			
-	
-		
 		}
 	}
 

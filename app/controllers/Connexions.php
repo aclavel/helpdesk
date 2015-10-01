@@ -16,7 +16,7 @@ class Connexions extends BaseController {
 		$this->title2="Mon compte";
 	}
 	
-	
+	protected $model;
 	
 	/* (non-PHPdoc)
 	 * @see \micro\controllers\BaseController::index()
@@ -26,9 +26,11 @@ class Connexions extends BaseController {
 		$this->loadView("connexion/vConnexion");
 	}
 	
-	public function compte() {
-		$this->header2();
-		$this->loadView("connexion/vCompte");
+	public function compte($id = NULL) {
+		$this->title="Mon compte";
+		$this->header();
+		$user = Auth::getUser();
+		$this->loadView("connexion/vCompte", array("user"=>$user));
 	}
 
 	private function header() {
@@ -39,15 +41,7 @@ class Connexions extends BaseController {
 		}
 	}
 	
-	private function header2() {
-		if(!RequestUtils::isAjax()){
-			$this->loadView("main/vHeader",array("infoUser"=>Auth::getInfoUser()));
-			echo "<div class='container'>";
-			echo "<h1>".$this->title2."</h1>";
-		}
-	}
-	
-	
+
 	public function testConnexion() {
 		$login = $_POST["login"] ;
 		//echo $login;
@@ -68,6 +62,35 @@ class Connexions extends BaseController {
 			echo "<span> Votre mot de passe ou login est incorrecte. </span>";
 		}
 	}
+	
+	public function modifCompte() {
+		$newLogin = $_POST["login"];
+		$newMdp = $_POST["mdp"];
+		$newMail = $_POST["mail"];
+		
+		$user = Auth::getUser();
+		array("user"=>$user);
+		$login = $user->getLogin();
+		
+		$requete = "UPDATE user SET login='".$newLogin."', password='".$newMdp."', mail='".$newMail."' WHERE login='".$login."'";
+		$statement=DAO::$db->prepareStatement($requete);
+		$result= $statement->execute();
+		
+		$user->setLogin($newLogin);
+		$user->setPassword($newMdp);
+		$user->setMail($newMail);
+		
+		$this->title="Mon compte";
+		$this->header();
+		$user = Auth::getUser();
+		$this->loadView("connexion/vCompte", array("user"=>$user));
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	
