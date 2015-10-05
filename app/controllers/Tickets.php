@@ -102,6 +102,7 @@ class Tickets extends \_DefaultController {
 		}
 		
 		$listCat=Gui::select($categories,$cat,"Sélectionner une catégorie ...");
+
 		$listStatut=Gui::select($statut, $stat, "Sélectionner un statut ...");
 		$listType=Gui::select(array("demande","intervention"),$ticket->getType(),"Sélectionner un type ...");
 		

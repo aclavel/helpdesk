@@ -24,6 +24,7 @@ class Connexions extends BaseController {
 	public function index() {
 		$this->header();
 		$this->loadView("connexion/vConnexion");
+		
 	}
 	
 	public function compte($id = NULL) {
@@ -55,12 +56,18 @@ class Connexions extends BaseController {
 					
 			);
 		$this->header();
-		$this->loadView("main/vDefault");
+		$notif= sizeof(DAO::getAll("Ticket", "idStatut='1'"));
+		$this->loadView("main/vDefault", array("notif"=>$notif));
+		
+		//$this->loadView("connexion/vConnexion", array("notif"=>$notif));
 		}
 		else {
 			$this->header();
 			echo "<span> Votre mot de passe ou login est incorrecte. </span>";
 		}
+		
+		
+		
 	}
 	
 	public function modifCompte() {
