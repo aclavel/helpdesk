@@ -41,7 +41,16 @@ if (Auth::isAdmin() == false){?>
 
 else{
 	
-
+	/* foreach($listStatut as $lStatut){
+	
+	
+		$disabled="";
+		if ($lStatut->getOrdre()<=$ticket->getStatut()->getOrdre()){
+			$disabled="disabled";
+				
+			echo "<input type='radio' ".$disabled." id='idStatut' ".$lStatut->getId()." name='idStatut' value=".$lStatut->getId()."><label class='control-label'
+			".$disabled." for='idStatut".$lStatut->getId()."'>nbsp;".$lStatut."</label></br>";
+		} */
 	
 
 	

@@ -52,7 +52,7 @@ class TicketsNouveau extends \_DefaultController {
 	
 public function index($message=null){
 		global $config;
-		$notifT = 'SELECT COUNT(idStatut ="0") FROM ticket';
+		
 		$baseHref=get_class($this);
 		if(isset($message)){
 			if(is_string($message)){
@@ -79,7 +79,7 @@ public function index($message=null){
 		echo "</table>";
 		echo "<a class='btn btn-primary' href='".$config["siteUrl"].$baseHref."/frm'>Ajouter...</a>";
 		//echo DAO::$db->query("SELECT COUNT(idStatut) FROM ticket where idStatut<1")->fetchColumn();
-		$objects=DAO::getAll("SELECT COUNT(idStatut) FROM ticket");
+	
 		
 		
 		
@@ -110,7 +110,7 @@ public function index($message=null){
 	
 		
 		$listCat=Gui::select($categories,$cat,"Sélectionner une catégorie ...");
-		$listStatut=Gui::select($statut, $stat, "Sélectionner un statut ...");
+		$listStatut=(Gui::select($statut, $stat, "Sélectionner un statut ..."));
 		$listType=Gui::select(array("demande","intervention"),$ticket->getType(),"Sélectionner un type ...");
 
 			$stat=$ticket->getStatut()->getId();

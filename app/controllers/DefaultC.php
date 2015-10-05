@@ -17,11 +17,17 @@ class DefaultC extends BaseController {
 	 */
 	public function index() {
 		$this->loadView("main/vHeader",array("infoUser"=>Auth::getInfoUser()));
-		$this->loadView("main/vDefault");
+		
+		$notif= sizeof(DAO::getAll("Ticket", "idStatut='1'"));
+		$this->loadView("main/vDefault",array("notif"=>$notif));
 		$this->loadView("main/vFooter");
+		
 		Jquery::getOn("click", ".btAjax", "sample/ajaxSample","#response");
+		
 		echo Jquery::compile();
 	}
+	
+	
 
 	/**
 	 * Affiche la page de test
@@ -38,8 +44,10 @@ class DefaultC extends BaseController {
 		$_SESSION["user"]=DAO::getOne("User", "admin=1");
 		$_SESSION['KCFINDER'] = array(
 				'disabled' => false
-				
+		
 		);
+		
+
 		
 		$this->index();
 	}
