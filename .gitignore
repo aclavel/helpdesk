@@ -67,3 +67,6 @@ app/controllers/Connexions.php
 app/views/main/vDefault.php
 app/controllers/Connexions.php
 app/controllers/Connexions.php
+*.php
+app/views/ticket/vReadElent.php
+*.php
