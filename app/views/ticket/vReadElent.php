@@ -34,7 +34,8 @@ foreach ($msg as $oklm){ ?>
 	
 <?php } ?>
 
-<form class="form-group">
+<form class="form-group" action='Messages/nouveauMess' method='post'>
+	<input type='hidden' name="ticket" value="<?php echo $ticket->getId();?>">
 	<label for="contenu">Contenu de votre message:</label> <br>
 	<textarea name="contenu" style="width:100%; height:100px; display:block; margin-bottom:10px; border:2px #aaa solid; border-radius:5px;"></textarea>
 	<button class="btn btn-primary" style="margin-bottom:100px; display:block;">Ajouter</button>
