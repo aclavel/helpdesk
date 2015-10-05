@@ -1,20 +1,16 @@
-
+<?php use micro\orm\DAO; ?>
 
 <div class="container">
 	<div class="well well-lg">
 		<div id="main">
-<<<<<<< HEAD
-=======
-<?php if(Auth::isAdmin()){?>
->>>>>>> 4ef739a48b8c8ff588f3e845d87be2073f15fa8a
 		<fieldset>
 		<legend>Récents</legend>
-		<a class="btn btn-info" href="TicketsNouveau">Nouveaux Tickets <?php echo "("; echo $notif; echo ")"; ?></a>
+		<a class="btn btn-info" href="TicketsNouveau">Nouveaux Tickets <?php echo $notifT; ?></a>
 		
 		</fieldset>
 			<fieldset>
 				<legend>Données</legend>
-			
+				
 				<a class="btn btn-default" href="users">Utilisateurs</a>
 				<a class="btn btn-primary" href="categories">Catégories</a>
 				<a class="btn btn-info" href="tickets">Tickets</a>
