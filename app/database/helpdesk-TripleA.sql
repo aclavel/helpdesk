@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `helpdesk`
 --
-CREATE DATABASE IF NOT EXISTS `helpdesk` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `helpdesk`;
+CREATE DATABASE IF NOT EXISTS `helpdesk-TripleA` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `helpdesk-TripleA`;
 
 -- --------------------------------------------------------
 
