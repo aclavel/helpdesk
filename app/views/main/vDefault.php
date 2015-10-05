@@ -3,16 +3,11 @@
 <div class="container">
 	<div class="well well-lg">
 		<div id="main">
-		<?php if(Auth::isAdmin()){	
-			echo DAO::getAll("Ticket", "COUNT((idStatut='0')");
-		
-			?>
 		<fieldset>
 		<legend>Récents</legend>
 		<a class="btn btn-info" href="TicketsNouveau">Nouveaux Tickets <?php echo $notifT; ?></a>
 		
 		</fieldset>
-		<?php }?>
 			<fieldset>
 				<legend>Données</legend>
 				

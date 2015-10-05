@@ -85,11 +85,4 @@ class Connexions extends BaseController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 }
