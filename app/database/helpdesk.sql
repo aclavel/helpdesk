@@ -65,7 +65,8 @@ CREATE TABLE IF NOT EXISTS `faq` (
   `idCategorie` int(11) DEFAULT NULL,
   `idUser` int(11) NOT NULL,
   `version` varchar(20) NOT NULL DEFAULT '1.0',
-  `popularity` int(11) NOT NULL
+  `popularity` int(11) NOT NULL,
+  `disable` tinyint(1) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
